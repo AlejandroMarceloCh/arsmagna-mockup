@@ -306,8 +306,8 @@ function Footer({ setPage }) {
       </div>
       <div className="border-t border-zinc-200">
         <div className="max-w-7xl mx-auto px-5 lg:px-8 py-5 flex flex-col md:flex-row items-center justify-between gap-2 text-xs text-zinc-500">
-          <div>© 2026 Ars Magna. Hecho en Perú 🇵🇪</div>
-          <div>Pago único · Acceso de por vida · Soporte directo</div>
+          <div>© 2026 Ars Magna.</div>
+          <div>Pago único · Soporte directo</div>
         </div>
       </div>
     </footer>

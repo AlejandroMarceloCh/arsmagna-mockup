@@ -118,7 +118,7 @@ function Curso({ setPage, setCursoId }) {
 
                 <div className="mt-6 space-y-2.5">
                   {[
-                    "Acceso de por vida — sin mensualidades",
+                    "Pago único — sin mensualidades",
                     "Material descargable (PDFs, ejercicios)",
                     "Soporte directo del profe Jimmy",
                     "Certificado al finalizar el curso",
