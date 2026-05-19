@@ -1,8 +1,8 @@
 /* ============================================================
-   Curso detalle page (always shows analisis-mat-1)
+   Curso detalle page — dinámico según cursoId
    ============================================================ */
-function Curso({ setPage, setCursoId }) {
-  const curso = CURSOS.find((c) => c.id === "analisis-mat-1");
+function Curso({ setPage, setCursoId, cursoId }) {
+  const curso = CURSOS.find((c) => c.id === cursoId) || CURSOS[0];
   const descuento = Math.round(((curso.precio_antes - curso.precio) / curso.precio_antes) * 100);
   const [openCap, setOpenCap] = React.useState(0);
 
@@ -14,9 +14,9 @@ function Curso({ setPage, setCursoId }) {
       <div className="max-w-7xl mx-auto px-5 lg:px-8 pt-6 text-sm text-zinc-500 flex items-center gap-1.5 flex-wrap">
         <button onClick={() => setPage("catalogo")} className="hover:text-zinc-900">Cursos</button>
         <Icon name="chevron-right" size={14} />
-        <button onClick={() => setPage("catalogo")} className="hover:text-zinc-900">UNALM</button>
+        <button onClick={() => setPage("catalogo")} className="hover:text-zinc-900">{curso.universidad}</button>
         <Icon name="chevron-right" size={14} />
-        <span className="text-zinc-900 font-medium truncate">Análisis Matemático I</span>
+        <span className="text-zinc-900 font-medium truncate">{curso.titulo_corto || curso.titulo}</span>
       </div>
 
       {/* Hero curso */}
@@ -24,7 +24,7 @@ function Curso({ setPage, setCursoId }) {
         <div className="lg:col-span-7">
           <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-green-100 text-green-800 text-xs font-bold">
             <span className="w-1.5 h-1.5 rounded-full bg-green-600" />
-            UNALM
+            {curso.universidad}
           </span>
           <h1 className="mt-4 text-4xl lg:text-5xl font-black tracking-tight leading-[1.05]" style={{ textWrap: "balance" }}>
             {curso.titulo}
@@ -32,9 +32,9 @@ function Curso({ setPage, setCursoId }) {
           <p className="mt-4 text-zinc-600 text-lg leading-relaxed">{curso.descripcion}</p>
 
           <div className="mt-6 flex items-center gap-5 flex-wrap text-sm">
-            <div className="flex items-center gap-1.5"><Stars value={5} /><span className="font-bold">4.9</span><span className="text-zinc-500">(184 reseñas)</span></div>
-            <div className="flex items-center gap-1.5 text-zinc-600"><Icon name="users" size={15} /><span><b className="text-zinc-900">1,240</b> alumnos</span></div>
-            <div className="flex items-center gap-1.5 text-zinc-600"><Icon name="refresh-cw" size={15} />Última actualización: Mar 2026</div>
+            <div className="flex items-center gap-1.5"><Stars value={5} /><span className="font-bold">{curso.rating}</span><span className="text-zinc-500">({curso.resenas} reseñas)</span></div>
+            <div className="flex items-center gap-1.5 text-zinc-600"><Icon name="users" size={15} /><span><b className="text-zinc-900">{curso.alumnos}</b> alumnos</span></div>
+            <div className="flex items-center gap-1.5 text-zinc-600"><Icon name="refresh-cw" size={15} />Última actualización: {curso.actualizacion}</div>
           </div>
 
           <div className="mt-7 grid grid-cols-2 sm:grid-cols-4 gap-3">
@@ -57,7 +57,7 @@ function Curso({ setPage, setCursoId }) {
           {/* Video preview */}
           <button
             onClick={() => setPage("player")}
-            className="mt-8 group relative w-full aspect-video rounded-2xl overflow-hidden bg-gradient-to-br from-orange-400 to-yellow-400 border border-zinc-200"
+            className={`mt-8 group relative w-full aspect-video rounded-2xl overflow-hidden bg-gradient-to-br ${curso.color_thumb} border border-zinc-200`}
           >
             <div className="absolute inset-0 stripes opacity-25" />
             <div className="absolute top-4 left-4 px-2.5 py-1.5 rounded-md bg-black/85 text-white text-xs font-bold uppercase tracking-wider">
@@ -65,8 +65,8 @@ function Curso({ setPage, setCursoId }) {
             </div>
             <div className="absolute bottom-4 left-4 right-4 flex items-end justify-between">
               <div className="text-white">
-                <div className="text-2xl font-black drop-shadow">Clase 1 · Números reales</div>
-                <div className="text-sm text-white/90">2h 08min</div>
+                <div className="text-2xl font-black drop-shadow">{curso.preview_titulo}</div>
+                <div className="text-sm text-white/90">{curso.preview_duracion}</div>
               </div>
             </div>
             <div className="absolute inset-0 flex items-center justify-center">
@@ -148,7 +148,7 @@ function Curso({ setPage, setCursoId }) {
         <div className="rounded-2xl border border-zinc-200 p-7 lg:p-10">
           <h2 className="text-2xl lg:text-3xl font-bold tracking-tight">Lo que aprenderás</h2>
           <div className="mt-6 grid md:grid-cols-2 gap-x-8 gap-y-3">
-            {APRENDERAS.map((a, i) => (
+            {(curso.aprenderas || APRENDERAS).map((a, i) => (
               <div key={i} className="flex items-start gap-3 text-[15px]">
                 <div className="mt-0.5 w-5 h-5 rounded-full bg-green-100 text-green-700 flex items-center justify-center flex-shrink-0">
                   <Icon name="check" size={12} strokeWidth={3} />
@@ -165,7 +165,7 @@ function Curso({ setPage, setCursoId }) {
         <div className="flex items-end justify-between mb-6">
           <h2 className="text-2xl lg:text-3xl font-bold tracking-tight">Temario del curso</h2>
           <div className="text-sm text-zinc-500">
-            <b className="text-zinc-900">4 capítulos</b> · {curso.clases} clases · {curso.horas}h totales
+            <b className="text-zinc-900">{curso.capitulos.length} capítulos</b> · {curso.clases} clases · {curso.horas}h totales
           </div>
         </div>
         <div className="rounded-2xl border border-zinc-200 divide-y divide-zinc-200 overflow-hidden bg-white">
@@ -290,7 +290,7 @@ function Curso({ setPage, setCursoId }) {
       <section className="max-w-7xl mx-auto px-5 lg:px-8 py-10">
         <h2 className="text-2xl lg:text-3xl font-bold tracking-tight">Otros cursos del profe</h2>
         <div className="mt-6 grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {CURSOS.filter((c) => c.id !== "analisis-mat-1").slice(0, 3).map((c) => (
+          {CURSOS.filter((c) => c.id !== curso.id).slice(0, 3).map((c) => (
             <CourseCard
               key={c.id}
               curso={c}

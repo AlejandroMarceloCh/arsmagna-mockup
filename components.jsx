@@ -102,6 +102,32 @@ function WhatsAppFab() {
   );
 }
 
+// Botones flotantes de atrás/adelante (estilo browser)
+function NavArrows({ canBack, canForward, onBack, onForward }) {
+  return (
+    <div className="fixed top-1/2 -translate-y-1/2 left-3 z-50 flex flex-col gap-2">
+      <button
+        onClick={onBack}
+        disabled={!canBack}
+        aria-label="Página anterior"
+        className={`w-10 h-10 rounded-full flex items-center justify-center shadow-lg border border-zinc-200 transition
+          ${canBack ? "bg-white hover:bg-zinc-50 text-zinc-900 hover:scale-105 cursor-pointer" : "bg-zinc-100 text-zinc-300 cursor-not-allowed"}`}
+      >
+        <Icon name="chevron-left" size={20} />
+      </button>
+      <button
+        onClick={onForward}
+        disabled={!canForward}
+        aria-label="Página siguiente"
+        className={`w-10 h-10 rounded-full flex items-center justify-center shadow-lg border border-zinc-200 transition
+          ${canForward ? "bg-white hover:bg-zinc-50 text-zinc-900 hover:scale-105 cursor-pointer" : "bg-zinc-100 text-zinc-300 cursor-not-allowed"}`}
+      >
+        <Icon name="chevron-right" size={20} />
+      </button>
+    </div>
+  );
+}
+
 function Logo({ onClick }) {
   return (
     <button onClick={onClick} className="flex items-center gap-3 group">
@@ -389,4 +415,4 @@ function CourseCard({ curso, onClick }) {
   );
 }
 
-Object.assign(window, { Icon, Logo, Navbar, Footer, Stars, CourseThumb, CourseCard, NavLink, WhatsAppIcon, WhatsAppFab, SOCIAL });
+Object.assign(window, { Icon, Logo, Navbar, Footer, Stars, CourseThumb, CourseCard, NavLink, WhatsAppIcon, WhatsAppFab, NavArrows, SOCIAL });
